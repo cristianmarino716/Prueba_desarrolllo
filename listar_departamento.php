@@ -1,53 +1,57 @@
 <?php
 include ("conexion.php"); 
 $con=conectar();
-
-//$cedula=$_POST['cedula'];
-$datos=$con->query("select * from unic_department ");
-$cantidad=$datos->num_rows;
-
-echo $cantidad;
-
-
-/*$id=$con ->query("select id from unic_department ");
-$contador=0;
-while($deid = mysqli_fetch_array($id)){
-  $arreglo[$contador]= $deid['id'];
-$contador += 1;
-}
-
-for ($i=0; $i < $contador; $i++) { 
-  echo $arreglo[$i];
-  $cant_estudiante=$con ->query("select * from unic_employec where department_id=$arreglo[$i] ");
-if (mysql_num_rows($cant_estudiante)>1) {
-  $final[$dosma]=$arreglo[$i];
-$dosma += 1;
-}
-}*/
-
-
-
-
+$datos=$con->query("select * from materia");
 ?>
-
+seleccione su horario!
+<html>
+<head><title>Horario</title></head>
+<body>
+ <form action="validacion.php" method="post">
 <table border="1">
   <thead>
-      <th>id</th>
-      <th>Name</th>
-      <th>City</th>
-     
+      <th>Materia</th>
+      <th>Horario</th>    
   </thead> 
-  <tbody>
+ 
+ <tbody>
 
-      <a href="formulario.html"> Volver</a>
-      <?php while($user = mysqli_fetch_array($datos)){?>
+    
+      <?php
+//aquí listo las materias de la base de datos y muestro en pantalla, 
+       $contador=0;
+       while($user = mysqli_fetch_array($datos)){?>
       <tr>
-      <td><?php echo $user['id'] ?></td>
-      <td><?php echo $user['department_name'] ?></td>
-      <td><?php echo $user['department_city'] ?></td>
-  
+      <td><?php echo $user['nombre'];
+      $numero=$user['id'];
+      
+       ?>
+       
+      </td>
+      <td>
+
+       
+        <select name="materia[]">
+            <option value="0">Seleccione</option>
+            <?php 
+            //mediante un select, listo los horarios de cada materia
+            $query = $con -> query ("SELECT * FROM horario where id_materia=$numero");
+            while($userd = mysqli_fetch_array($query)){?>
+ 
+            <option value="<?php echo $numero ?>"><?php echo $userd['horario_dia'];
+            echo$userd['horario_hora'];
+            ?></option>
+             <?php } ?>
+        </select>
+     </td>
       </tr> 
       <?php } ?>
-          
-  </tbody>   
+
+
+  </tbody>  
+
 </table>
+<input type="submit" value="Crear Horario">
+</form>
+</body>
+</thml>
